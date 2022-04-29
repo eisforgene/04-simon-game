@@ -5,6 +5,7 @@ let userClickedPattern = [];
 
 let started = false;
 
+let highScore = 0;
 let level = 0;
 
 $(document).keypress(function (e) {
@@ -81,6 +82,12 @@ function animatePress(currentColor) {
 };
 
 function startOver() {
+
+    if (level > highScore) {
+        highScore += (level - 1)
+        $('#highscore-title').text('High Score: ' + highScore);
+    }
+
     started = false;
     level = 0;
     gamePattern = [];
