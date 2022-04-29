@@ -16,7 +16,7 @@ $(document).keypress(function (e) {
     }
 });
 
-$('.btn').click(function() {
+$('.btn').click(function () {
 
     // let userChosenColor = e.target.id;
     let userChosenColor = $(this).attr('id'); // $(this) = targets the element with btn class, then finds the attr id of the btn element
@@ -47,12 +47,13 @@ function checkAnswer(currentLevel) {
         }, 200);
 
         $('#level-title').text('Game Over, Press Any Key to Restart');
+        startOver();
     }
 }
 
 function nextSequence() {
-
     userClickedPattern = [];
+
     level++;
     $('#level-title').text('Level ' + level);
 
@@ -60,8 +61,10 @@ function nextSequence() {
     let randomChosenColor = buttonColors[randomNumber];
     gamePattern.push(randomChosenColor);
 
-    $("#" + randomChosenColor).fadeOut(150).fadeIn(150).fadeIn(150);
-    playSound(randomChosenColor);
+    // $("#" + randomChosenColor).fadeOut(150).fadeIn(150).fadeIn(150);
+
+    playPattern();
+    // playSound(randomChosenColor);
 }
 
 function playSound(name) {
@@ -76,3 +79,23 @@ function animatePress(currentColor) {
         $('#' + currentColor).removeClass('pressed');
     }, 100);
 };
+
+function startOver() {
+    started = false;
+    level = 0;
+    gamePattern = [];
+}
+
+function playPattern() {
+    let i = 0; // to start array at 0
+    let intervalId = setInterval(function () { // setInterval function into intervalId variable
+        $('#' + gamePattern[i]).fadeOut(100).fadeIn(100); // grab id of color by using gamePattern[i] and then add fade out feature
+
+        playSound(gamePattern[i]); // play sound for each color in the gamePattern array
+        i++; // increment by 1 after playing the sound
+
+        if (i === gamePattern.length) { // once i === the length of the gamePattern array, use the clearInterval(intervalId) to stop the function from repeating
+            clearInterval(intervalId)
+        }
+    }, 300) // loop every 300 milliseconds
+}
